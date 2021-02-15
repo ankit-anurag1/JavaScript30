@@ -59,6 +59,41 @@
 
 <script>
 
+  // define function to be executed on keypress
+  const startPlaying = (e) => {
+    // select all div and audio elements based on key pressed
+    const divEl = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    const audEl = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+
+    // if no key is pressed, return
+    if(!divEl) return;
+
+    // to div element, add 'playing' class
+    divEl.classList.add("playing");
+
+    // to audio element, start playing
+    audEl.play();
+  }
+
+  // after the key has been pressed, remove css effects (playing class)
+  const removeEffects = (e) => {
+    // playing class adds transform property
+    // if transform property exists on the target, remove playing class
+    if(e.propertyName === 'transform'){
+      e.target.classList.remove("playing");
+    }
+  }
+
+  // add keypress event to entire document
+  document.addEventListener("keydown", startPlaying);
+
+  // select all keys to add style effects on keypress
+  const keys = document.querySelectorAll(".key");
+  // transitionend is fired when a CSS transition is complete
+  keys.forEach(key => {
+    key.addEventListener("transitionend", removeEffects);
+  });
+
 </script>
 
 
